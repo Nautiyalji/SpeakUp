@@ -91,7 +91,7 @@ class _ProgressChart extends StatelessWidget {
           color: color,
           isCurved: true,
           barWidth: 2.5,
-          dotData: const FlDotData(show: false),
+          dotData: const FlDotData(show: true),
         );
 
     return Container(
