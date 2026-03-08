@@ -1,6 +1,6 @@
 # ── Core Web Framework
 fastapi
-"uvicorn[standard]"
+uvicorn[standard]
 python-dotenv
 pydantic
 python-multipart
