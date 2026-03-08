@@ -193,8 +193,17 @@ class _SessionScreenState extends ConsumerState<SessionScreen> with TickerProvid
         }
       }
     } else {
-      await _audio.startRecording();
-      setState(() {}); // Refresh UI to show recording state
+      try {
+        await _audio.startRecording();
+        setState(() {}); // Refresh UI to show recording state
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Failed to start recording: ${e.toString()}'),
+            backgroundColor: AppColors.errorRed,
+          ));
+        }
+      }
     }
   }
 }

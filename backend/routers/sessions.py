@@ -322,4 +322,5 @@ def _update_streak(db, user_id):
         db.table("profiles").update({
             "daily_streak": new_streak,
             "total_sessions": total_sessions + 1,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         }).eq("id", user_id).execute()
