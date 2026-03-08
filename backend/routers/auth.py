@@ -59,11 +59,14 @@ async def get_profile(
         raise HTTPException(status_code=403, detail="Access denied.")
 
     db = get_supabase()
-    response = db.table("profiles").select("*").eq("id", user_id).single().execute()
+    response = db.table("profiles").select("*").eq("id", user_id).execute()
+    
     if not response.data:
-        raise HTTPException(status_code=404, detail="Profile not found.")
+        raise HTTPException(status_code=404, detail="Profile not found. Please complete your profile setup.")
 
-    return ProfileResponse(**response.data)
+    # Since we used execute() without single(), data is a list
+    profile_data = response.data[0]
+    return ProfileResponse(**profile_data)
 
 
 @router.patch("/profile/{user_id}", response_model=ProfileResponse)
