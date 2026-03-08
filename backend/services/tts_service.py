@@ -6,7 +6,6 @@ import asyncio
 import io
 import os
 import tempfile
-import pyttsx3
 import edge_tts
 
 # Use edge-tts in cloud, pyttsx3 locally
@@ -27,12 +26,13 @@ PYTTSX3_VOICE_MAP = {
     "interviewer": 0,
 }
 
-def get_tts_engine() -> pyttsx3.Engine:
+def get_tts_engine():
     """Lazy-load and cache the pyttsx3 engine."""
     global _engine
     if IS_CLOUD:
         return None
     if _engine is None:
+        import pyttsx3
         print("[TTS] Initialising local pyttsx3 engine...")
         _engine = pyttsx3.init()
         _engine.setProperty("rate", 165)
