@@ -1,108 +1,109 @@
-# SpeakUp — AI Communication Coach
+# SpeakUp 🎙️ — AI Communication & Interview Coach
 
-> An AI-powered voice coaching app for English communication, confidence, and interview skills.
+[![Vercel Deployment](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://speak-up-ochre.vercel.app)
+[![Render Deployment](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://speakup-api-jd2e.onrender.com/health)
+[![Flutter](https://img.shields.io/badge/Frontend-Flutter-02569B?style=for-the-badge&logo=flutter)](https://flutter.dev)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+
+**SpeakUp** is a state-of-the-art AI-powered communication coach designed to help individuals master English fluency, build confidence, and ace high-stakes interviews. Using a blend of LLMs, Voice-to-Text, and Acoustic Analysis, SpeakUp provides real-time, actionable feedback.
 
 ---
 
-## ⚡ Quick Start — Backend
+## ✨ Features
 
-**Prerequisites:** Python 3.11+, FFmpeg installed
+*   **🗣️ Real-time Voice Interaction**: Engage in natural conversations with an AI coach.
+*   **🧠 Intelligent Analysis**: Feedback on grammar, vocabulary, and pronunciation.
+*   **📊 Progress Dashboard**: Track your fluency improvements over time with detailed charts.
+*   **🎯 Accent Selection**: Choose between Indian and British English targets to align with your goals.
+*   **🏢 Interview Mastery**: (Phase 2) Roleplay mock interviews with domain-specific AI panelists.
 
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: [Flutter](https://flutter.dev) (Web & Mobile)
+- **State Management**: [Riverpod](https://riverpod.dev)
+- **Networking**: [Dio](https://pub.dev/packages/dio)
+- **Auth & DB**: [Supabase Flutter SDK](https://supabase.com/docs/reference/dart/initializing)
+
+### Backend
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com) (Python)
+- **STT**: [OpenAI Whisper](https://github.com/openai/whisper)
+- **LLMs**: Google Gemini (Pro) & Groq (Llama-3)
+- **Audio Processing**: [Librosa](https://librosa.org/) & Scipy
+- **DB Client**: [Supabase Python](https://supabase.com/docs/reference/python/introduction)
+
+---
+
+## 🏗️ Project Structure
+
+```bash
+SpeakUp/
+├── apps/mobile_web_app/      # Flutter Web & Mobile Client
+│   ├── lib/
+│   │   ├── core/             # Design System & Routing
+│   │   ├── providers/        # State Management (Auth, Session)
+│   │   ├── screens/          # UI Layers
+│   │   └── services/         # API & Audio Logic
+│   └── vercel_build.sh       # Custom Vercel Build Script
+├── backend/                  # FastAPI Python Server
+│   ├── routers/              # API Endpoints
+│   ├── services/             # ML & AI Service Logic
+│   ├── models/               # Data Schemas
+│   └── utils/                # Database & Audio Utils
+├── infrastructure/           # Supabase Schema & SQL
+└── render.yaml               # Infrastructure as Code (Render)
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Nautiyalji/SpeakUp.git
+cd SpeakUp
+```
+
+### 2. Backend Setup
 ```bash
 cd backend
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
-
+# Windows: venv\Scripts\activate | Mac/Linux: source venv/bin/activate
 pip install -r requirements.txt
-
-# Copy and fill in your API keys
-cp .env.example .env
-
-# Run (development)
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+cp .env.example .env  # Add your API keys here
+uvicorn main:app --reload
 ```
 
-**API docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
-
----
-
-## 📱 Quick Start — Flutter App
-
-**Prerequisites:** Flutter SDK 3.22+ (stable channel)
-
+### 3. Frontend Setup
 ```bash
 cd apps/mobile_web_app
 flutter pub get
-
-# Run on Android (with emulator running)
-flutter run
-
-# Run on Web
 flutter run -d chrome --dart-define=BASE_URL=http://localhost:8000
 ```
 
 ---
 
-## 🗄️ Database Setup (Supabase)
+## ☁️ Deployment
 
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** in the Supabase dashboard
-3. Paste and run `infrastructure/supabase/schema.sql`
-4. Copy your **Project URL**, **Anon Key**, and **Service Key** into `backend/.env`
+- **Frontend**: Automatically deployed to **Vercel** on every push to `main`.
+- **Backend**: Hosted on **Render** (Free tier) with automatic zero-downtime deployments.
 
 ---
 
-## 🔑 Environment Variables (`backend/.env`)
+## 📅 Roadmap
 
-| Variable | Description |
-|---|---|
-| `SUPABASE_URL` | Your Supabase project URL |
-| `SUPABASE_ANON_KEY` | Supabase public anon key |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key (backend only) |
-| `GEMINI_API_KEY` | Google Gemini API key (get from [AI Studio](https://aistudio.google.com)) |
-| `GROQ_API_KEY` | Groq API key (fallback LLM) |
-| `WHISPER_MODEL_SIZE` | `base` (default) — try `small` for better accuracy |
+- [x] **Phase 1**: MVP with Voice Coaching & Progress Tracking.
+- [ ] **Phase 2**: Interview Intelligence (RAG + JD Analysis).
+- [ ] **Phase 3**: Gamified Learning Hub & Social Sharing.
 
 ---
 
-## 🏗️ Architecture
+## 📄 License
 
-```
-speak_up/
-├── backend/                  # FastAPI Python Backend
-│   ├── main.py               # App entry + startup model loading
-│   ├── routers/              # auth.py, sessions.py, progress.py
-│   ├── services/             # whisper, tts, llm, analysis, grammar
-│   ├── models/               # Pydantic schemas
-│   └── utils/                # supabase_client, audio_utils, prompts
-├── apps/mobile_web_app/      # Flutter Frontend
-│   └── lib/
-│       ├── core/             # theme, router, constants, supabase_config
-│       ├── screens/          # auth, home, session, progress, profile
-│       ├── providers/        # auth, session, progress (Riverpod)
-│       └── services/         # api_service, audio_service
-└── infrastructure/
-    └── supabase/schema.sql   # Full DB setup with RLS
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📋 Phase Roadmap
-
-| Phase | Status | Description |
-|---|---|---|
-| **Phase 1 — MVP** | ✅ Complete | Voice coaching loop, Auth, Progress tracking |
-| **Phase 2 — Interview** | 🔜 Planned | Multi-panelist mock interviews, RAG with JD upload |
-| **Phase 3 — Polish** | 🔜 Planned | Gamification, Learning hub, PDF reports |
-
----
-
-## 🧪 Running Backend Tests
-
-```bash
-cd backend
-pytest tests/ -v
-```
+Developed with ❤️ by the **SpeakUp Team**.
