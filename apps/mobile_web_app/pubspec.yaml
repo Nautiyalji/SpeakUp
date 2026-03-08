@@ -24,8 +24,8 @@ dependencies:
   supabase_flutter: ^2.5.0
 
   # ── Audio ───────────────────────────────────────────────────────────────────
-  flutter_sound: ^9.2.13        # Microphone recording
-  just_audio: ^0.9.38           # Audio playback
+  flutter_sound: ^9.2.13 # Microphone recording
+  just_audio: ^0.9.38 # Audio playback
 
   # ── Charts ──────────────────────────────────────────────────────────────────
   fl_chart: ^0.68.0
@@ -42,6 +42,7 @@ dependencies:
 
   # ── Utilities ───────────────────────────────────────────────────────────────
   intl: ^0.19.0
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
