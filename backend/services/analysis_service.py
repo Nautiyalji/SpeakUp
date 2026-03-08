@@ -6,8 +6,13 @@ import io
 import re
 import asyncio
 import numpy as np
-import librosa
-import soundfile as sf
+try:
+    import librosa
+    import soundfile as sf
+    LIBROSA_AVAILABLE = True
+except ImportError:
+    print("[Analysis] WARNING: librosa or soundfile missing. Acoustic analysis disabled.")
+    LIBROSA_AVAILABLE = False
 
 FILLER_WORDS = {
     "um", "uh", "like", "you know", "basically", "actually",
@@ -20,6 +25,28 @@ def analyse_audio_and_text(audio_bytes: bytes, transcript: str) -> dict:
     Full analysis pipeline for one turn of a coaching session.
     Returns a dict of raw metrics + computed scores (all 0-100).
     """
+    if not LIBROSA_AVAILABLE:
+        # Fallback for cloud environments without system audio libraries
+        words = transcript.lower().split()
+        words_count = len(words)
+        return {
+            "duration": 0.0,
+            "wpm": 0,
+            "words_count": words_count,
+            "pause_count": 0,
+            "filler_count": 0,
+            "avg_pitch": 0.0,
+            "pitch_variance": 0.0,
+            "energy_db": 0.0,
+            "energy_variance": 0.0,
+            "type_token_ratio": 0.0,
+            "completion_rate": 0.0,
+            "confidence_score": 70.0,
+            "fluency_score": 70.0,
+            "vocabulary_score": 70.0,
+            "notice": "Acoustic analysis disabled (cloud mode)"
+        }
+
     # ── Load Audio ────────────────────────────────────────────────────────────
     buffer = io.BytesIO(audio_bytes)
     y, sr = sf.read(buffer, dtype="float32")

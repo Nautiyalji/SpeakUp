@@ -17,6 +17,8 @@ google-genai
 # ── Audio Processing (Lightweight)
 soundfile
 numpy
+librosa
+scipy
 
 # ── NLP & Grammar
 language_tool_python
