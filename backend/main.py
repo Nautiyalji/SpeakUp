@@ -37,20 +37,24 @@ app = FastAPI(
 )
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
-# Allow both localhost and the local network IP for mobile/cross-device testing
 origins = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
-    "http://10.199.232.180:8080",
+    "http://localhost:3000",
+    "https://speak-up-ochre.vercel.app",  # Production Vercel URL
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In development, allow all origins for ease of testing across IP/localhost
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Optional: Also allow everything without credentials if the above fails for some reason
+# (Many developers use "*" during prototyping, but browser security is getting stricter)
+# app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 from routers import auth, sessions, progress, interview
