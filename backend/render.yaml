@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: speakup-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: DEPLOY_PLATFORM
+        value: cloud
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: WHISPER_MODEL_SIZE
+        value: base

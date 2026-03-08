@@ -1,0 +1,28 @@
+# ── Core Web Framework
+fastapi
+"uvicorn[standard]"
+python-dotenv
+pydantic
+python-multipart
+httpx
+
+# ── Supabase
+supabase
+
+# ── Cloud-Friendly Voice Services
+edge-tts
+groq
+google-generativeai
+
+# ── Audio Processing (Lightweight)
+soundfile
+numpy
+
+# ── NLP & Grammar
+language_tool_python
+nltk
+
+# ── Testing
+pytest
+pytest-asyncio
+httpx
