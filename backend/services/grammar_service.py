@@ -9,10 +9,14 @@ import language_tool_python
 @lru_cache(maxsize=1)
 def _get_tool() -> language_tool_python.LanguageTool:
     """Load LanguageTool once and keep it in memory."""
-    print("[Grammar] Loading LanguageTool...")
-    tool = language_tool_python.LanguageTool("en-US")
-    print("[Grammar] LanguageTool loaded.")
-    return tool
+    try:
+        print("[Grammar] Loading LanguageTool...")
+        tool = language_tool_python.LanguageTool("en-US")
+        print("[Grammar] LanguageTool loaded.")
+        return tool
+    except Exception as e:
+        print(f"[Grammar] WARNING: Could not load LanguageTool (likely missing Java): {e}")
+        return None
 
 
 def check_grammar(text: str) -> dict:
@@ -31,6 +35,17 @@ def check_grammar(text: str) -> dict:
     """
     tool = _get_tool()
     word_count = len(text.split())
+
+    if not tool:
+        # Fallback if Java/LanguageTool is missing (e.g. on Render)
+        return {
+            "error_count": 0,
+            "errors": [],
+            "grammar_score": 90.0, # Neutral score
+            "corrected_text": text,
+            "error_categories": {},
+            "notice": "Grammar check disabled (cloud mode)"
+        }
 
     if word_count < 10:
         return {
