@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart' hide AudioSource;
 import 'package:just_audio/just_audio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
