@@ -48,8 +48,35 @@ def analyse_audio_and_text(audio_bytes: bytes, transcript: str) -> dict:
         }
 
     # ── Load Audio ────────────────────────────────────────────────────────────
-    buffer = io.BytesIO(audio_bytes)
-    y, sr = sf.read(buffer, dtype="float32")
+    try:
+        # Try soundfile first (faster)
+        buffer = io.BytesIO(audio_bytes)
+        y, sr = sf.read(buffer, dtype="float32")
+    except Exception:
+        # Fallback to librosa.load which uses audioread/ffmpeg (handles WebM/Opus)
+        try:
+            buffer = io.BytesIO(audio_bytes)
+            y, sr = librosa.load(buffer, sr=None)
+        except Exception as e:
+            print(f"[Analysis] Audio loading failed: {e}")
+            return {
+                "duration": 0.0,
+                "wpm": 0,
+                "words_count": len(transcript.split()),
+                "pause_count": 0,
+                "filler_count": 0,
+                "avg_pitch": 0.0,
+                "pitch_variance": 0.0,
+                "energy_db": 0.0,
+                "energy_variance": 0.0,
+                "type_token_ratio": 0.0,
+                "completion_rate": 0.0,
+                "confidence_score": 50.0,
+                "fluency_score": 50.0,
+                "vocabulary_score": 50.0,
+                "notice": "Acoustic analysis failed: format error"
+            }
+
     if len(y.shape) > 1:
         y = y.mean(axis=1)  # Stereo → mono
     if sr != 22050:

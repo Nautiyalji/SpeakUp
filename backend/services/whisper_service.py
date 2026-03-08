@@ -49,9 +49,12 @@ async def _transcribe_cloud(audio_bytes: bytes, language: str) -> dict:
     """Transcribe using Groq Cloud API."""
     client = get_groq_client()
     
-    # Groq needs a file-like object with a name
-    file_name = "audio.wav"
-    audio_file = (file_name, audio_bytes, "audio/wav")
+    # Detect format (simplified)
+    is_webm = audio_bytes.startswith(b'\x1a\x45\xdf\xa3')
+    file_name = "audio.webm" if is_webm else "audio.wav"
+    mime_type = "audio/webm" if is_webm else "audio/wav"
+
+    audio_file = (file_name, audio_bytes, mime_type)
     
     try:
         response = client.audio.transcriptions.create(
