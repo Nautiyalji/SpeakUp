@@ -12,7 +12,7 @@ supabase
 # ── Cloud-Friendly Voice Services
 edge-tts
 groq
-google-generativeai
+google-genai
 
 # ── Audio Processing (Lightweight)
 soundfile
